@@ -38,4 +38,4 @@ Hash table of lists. Key is a "match key" explained below. Value is a list of ti
   c. price
 3. Look in hash table for match key.
   a. If list not empty, pop the first timestamp in the list and output a result.
-  b. Else, push the timestamp onto the list
+  b. Else, push the timestamp onto the list of "hash key", inverse of "match key"
