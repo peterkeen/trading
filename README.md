@@ -35,3 +35,7 @@ Results are tab-delimited lines consisting of the following fields:
 2. Insert order into appropriate order book
 3. Check order book for a match at the top
 4. If there is a match, remove top orders from both buy and sell and print trade
+
+## License
+
+MIT
