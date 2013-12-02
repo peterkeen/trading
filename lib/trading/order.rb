@@ -48,9 +48,16 @@ class Trading::Order
   end
 
   def match?(other)
+
+    price_match = if order_type == :buy && other.order_type == :sell
+      price >= other.price
+    else
+      price <= other.price
+    end
+    
     commodity == other.commodity &&
-      price == other.price &&
-      quantity == other.quantity
+      quantity == other.quantity &&
+      price_match
   end
 
   private
