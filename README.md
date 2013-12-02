@@ -1,5 +1,4 @@
-Trading Engine Model
---------------------
+# Trading Engine Model
 
 This is a simple toy trading engine. Orders stream in on STDIN and fulfilled trades
 stream out on STDOUT. The engine supports arbitrary commodities.
