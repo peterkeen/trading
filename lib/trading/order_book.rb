@@ -18,7 +18,7 @@ class Trading::OrderBook
 
   def match?
     return false if buy_map.size == 0 || sell_map.size == 0
-    sell_map.max_key.match? buy_map.min_key
+    sell_map.min_key.match? buy_map.max_key
   end
 
   def trade!
