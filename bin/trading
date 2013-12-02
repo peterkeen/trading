@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+begin
+  require 'trading'
+rescue LoadError
+  path = File.expand_path '../../lib', __FILE__
+  $:.unshift(path) if File.directory?(path) && !$:.include?(path)
+  require 'trading'
+end
+
+engine = Trading::Engine.new
+
+ARGF.each do |line|
+  order = Trading::Order.parse(line.trim)
+  result = engine.submit_order(order)
+  if result
+    puts result
+  end
+end

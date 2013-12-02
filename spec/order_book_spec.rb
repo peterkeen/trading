@@ -74,7 +74,7 @@ describe "Trading::OrderBook" do
       @book.submit_order(buy2)
       @book.submit_order(sell)
 
-      @book.trade!.should eq([buy, sell])
+      @book.trade!.should eq(Trading::Trade.new(buy, sell))
 
       @book.buy_map.size.should eq(1)
       @book.sell_map.size.should eq(0)

@@ -28,6 +28,6 @@ class Trading::OrderBook
     sell_map.delete(sell)
     buy_map.delete(buy)
 
-    return [buy, sell]
+    return Trading::Trade.new(buy, sell)
   end
 end

@@ -17,7 +17,7 @@ describe 'Trading::Engine' do
       sell = Trading::Order.parse("2013-12-01T16:20:00Z\tSELL\tBTC\t100.000\t100")
 
       @engine.submit_order(buy).should eq(false)
-      @engine.submit_order(sell).should eq([buy, sell])
+      @engine.submit_order(sell).should eq(Trading::Trade.new(buy, sell))
     end
 
     it "should not match differing commodities" do
