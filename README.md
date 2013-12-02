@@ -1,5 +1,5 @@
-Simple Trading Engine
----------------------
+Trading Engine Model
+--------------------
 
 This is a simple toy trading engine. Orders stream in on STDIN and fulfilled trades
 stream out on STDOUT. The engine supports arbitrary commodities.
@@ -14,28 +14,25 @@ Orders are tab-delimted lines consisting of the following fields:
 2. Order Type. Currently supported orders are BUY and SELL
 3. Symbol. A string consisting of any characters except newline and tab.
 4. Price. A string matching the following regex: `\d+\.\d+`
+5. Quantity. A string matching the regex `\d+`
 
 ## Result Format
 
 Results are tab-delimited lines consisting of the following fields:
 
-1. Result time.
-2. Commodity
-3. Price
-4. Buy order time
-5. Sell order time
+1. Commodity
+2. Price
+3. Buy order time
+4. Sell order time
 
 ## Data Structure
 
-Hash table of lists. Key is a "match key" explained below. Value is a list of timestamps.
+* hash of order books, one per commodity
+* order book is a pair of rb tree maps, one for buy and one for sell
 
 ## Algorithm
 
 1. Parse order
-2. Generate a corresponding "match key"
-  a. inverse of order type. For "BUY" this is "SELL" and vise versa.
-  b. commodity
-  c. price
-3. Look in hash table for match key.
-  a. If list not empty, pop the first timestamp in the list and output a result.
-  b. Else, push the timestamp onto the list of "hash key", inverse of "match key"
+2. Insert order into appropriate order book
+3. Check order book for a match at the top
+4. If there is a match, remove top orders from both buy and sell and print trade

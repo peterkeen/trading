@@ -3,6 +3,7 @@ require 'time'
 class Trading::Order
 
   attr_reader :time, :order_type, :price, :commodity
+  attr_accessor :quantity
 
   def self.parse(line)
     parts = line.split(/\t/)
@@ -10,7 +11,8 @@ class Trading::Order
       :time => Time.parse(parts[0]),
       :order_type => parts[1].downcase.to_sym,
       :commodity => parts[2],
-      :price => parts[3]
+      :price => parts[3],
+      :quantity => parts[4].to_i
     )
   end
 
@@ -19,14 +21,36 @@ class Trading::Order
     @order_type = opts[:order_type]
     @commodity = opts[:commodity]
     @price = opts[:price]
+    @quantity = opts[:quantity]
   end
 
-  def to_match_key
-    "#{match_order_type.to_s.upcase}-#{commodity}-#{price}"
+  def <=>(other)
+    commodity_e = commodity <=> other.commodity
+    return commodity_e if commodity_e != 0
+
+    price_e = price <=> other.price
+    return price_e if price_e != 0
+
+    time_e = time <=> other.time
+    return time_e
   end
 
-  def to_hash_key
-    "#{order_type.to_s.upcase}-#{commodity}-#{price}"
+  def split(amount)
+    if amount >= quantity
+      raise "Invalid split: desired amount #{amount} greater than available amount #{quantity}"
+    end
+
+    new_order = dup
+    new_order.quantity = amount
+    self.quantity = self.quantity - amount
+
+    new_order
+  end
+
+  def match?(other)
+    commodity == other.commodity &&
+      price == other.price &&
+      quantity == other.quantity
   end
 
   private
@@ -34,5 +58,5 @@ class Trading::Order
   def match_order_type
     order_type == :buy ? :sell : :buy
   end
-  
+
 end
