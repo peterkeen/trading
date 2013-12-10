@@ -10,12 +10,20 @@ rescue LoadError
   require 'trading'
 end
 
+class LoggingObserver
+  def trade(obj)
+    puts obj
+  end
+
+  def order(obj)
+    puts obj
+  end
+end
+
 engine = Trading::Engine.new
+engine.add_observer(LoggingObserver.new)
 
 ARGF.each do |line|
   order = Trading::Order.parse(line.trim)
-  result = engine.submit_order(order)
-  if result
-    puts result
-  end
+  engine.submit_order(order)
 end

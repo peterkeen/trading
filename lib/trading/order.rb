@@ -35,6 +35,10 @@ class Trading::Order
     return time_e
   end
 
+  def to_s
+    [time, order_type, price, commodity, quantity].join("\t")
+  end
+
   def split(amount)
     if amount >= quantity
       raise "Invalid split: desired amount #{amount} greater than available amount #{quantity}"
