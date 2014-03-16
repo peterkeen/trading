@@ -1,0 +1,3 @@
+---
+name: trading
+description: A toy trading engine that only supports BUY and SELL limit orders
